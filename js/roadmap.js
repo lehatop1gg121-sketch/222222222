@@ -29,14 +29,28 @@ function renderTopicsGrid() {
         const card = document.createElement('div');
         card.className = `topic-card ${isCompleted ? 'completed' : ''} ${topic.type || 'lesson'}`;
         
-        let typeLabel = "Урок";
-        if (topic.type === 'independent') typeLabel = "Самост. работа";
-        if (topic.type === 'control') typeLabel = "Контр. работа";
+        let typeLabel = 'Урок';
+        if (topic.type === 'independent') typeLabel = 'Самост. работа';
+        if (topic.type === 'control')     typeLabel = 'Контр. работа';
+
+        // Для СР и КР показываем количество заданий, а не HTML из content
+        let preview;
+        if (topic.type === 'independent' || topic.type === 'control') {
+            const count = topic.tasks ? topic.tasks.length : 0;
+            preview = `${count} ${count === 1 ? 'задание' : count < 5 ? 'задания' : 'заданий'}`;
+        } else {
+            // Убираем HTML-теги из превью
+            const stripped = (topic.content || '')
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            preview = stripped.substring(0, 70) + (stripped.length > 70 ? '…' : '');
+        }
 
         card.innerHTML = `
             <div class="status-badge">${isCompleted ? 'Завершено ✓' : typeLabel}</div>
             <h3>${topic.title}</h3>
-            <p>${topic.content ? topic.content.substring(0, 60) + '...' : 'Проверка знаний'}</p>
+            <p>${preview}</p>
         `;
         card.onclick = () => window.location.href = `task.html?id=${topic.id}`;
         grid.appendChild(card);
