@@ -143,8 +143,11 @@ window.JavaRunner = {
             '__println', '__print', '__guard',
             'Math', 'parseInt', 'parseFloat', 'String', 'Boolean', 'Number', 'Error',
             '"use strict";\n' + safe + '\n' +
-            // Пробуем вызвать Main.main или просто main
-            'try { Main.main([]); } catch(e) { if(!(e instanceof ReferenceError)) throw e; }'
+            'if (typeof Main !== "undefined" && typeof Main.main === "function") {\n' +
+            '    Main.main([]);\n' +
+            '} else {\n' +
+            '    throw new Error("\u041a\u043b\u0430\u0441\u0441 Main \u0438\u043b\u0438 \u043c\u0435\u0442\u043e\u0434 main \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d.");\n' +
+            '}'
         );
         fn(__println, __print, __guard, Math, parseInt, parseFloat, String, Boolean, Number, Error);
 
