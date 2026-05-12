@@ -17,9 +17,25 @@ window.SmartChecker = {
     },
 
     containsPattern(rawCode, pattern) {
-        const clean = this.stripCommentsAndStrings(rawCode);
-        try   { return new RegExp(pattern, 'i').test(clean); }
-        catch { return clean.includes(pattern.replace(/\\\\/g,'\\').replace(/\\/g,'')); }
+        // Если паттерн — строковый литерал (начинается и заканчивается на ")
+        // проверяем в ОРИГИНАЛЬНОМ коде, потому что stripCommentsAndStrings убирает строки
+        const isStringLiteral = pattern.startsWith('"') || pattern.startsWith("'");
+        const searchIn = isStringLiteral
+            ? this.stripCommentsOnly(rawCode)   // убираем только комментарии
+            : this.stripCommentsAndStrings(rawCode); // убираем и строки тоже
+        try   { return new RegExp(pattern, 'i').test(searchIn); }
+        catch { return searchIn.includes(pattern.replace(/\\\\/g,'\\').replace(/\\/g,'')); }
+    },
+
+    /** Убирает только комментарии, сохраняя строковые литералы */
+    stripCommentsOnly(code) {
+        let r = '', i = 0, n = code.length;
+        while (i < n) {
+            if (code[i]==='/' && code[i+1]==='/') { while(i<n && code[i]!=='\n') i++; r+=' '; continue; }
+            if (code[i]==='/' && code[i+1]==='*') { i+=2; while(i<n && !(code[i]==='*'&&code[i+1]==='/')) i++; i+=2; r+=' '; continue; }
+            r+=code[i]; i++;
+        }
+        return r;
     },
 
     normalizeOutput(s) { return s.replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim(); },
