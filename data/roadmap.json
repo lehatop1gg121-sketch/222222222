@@ -1,0 +1,520 @@
+{
+    "topics": [
+        {
+            "id": "vars",
+            "type": "lesson",
+            "title": "1. Переменные и типы данных",
+            "content": "<h3>Что такое переменные?</h3>\n<p>Переменная — это ячейка памяти, в которую программа может сохранять значения. В Java каждая переменная имеет строкгий тип, определяющий, что именно в ней хранится.</p>\n<h3>Основные примитивные типы:</h3>\n<ul>\n  <li><code>int</code>: Целочисленные значения (например, 10, -5, 1000).</li>\n  <li><code>double</code>: Числа с плавающей точкой/дробные (например, 3.14, 9.99).</li>\n  <li><code>char</code>: Одиночный символ, пишется в одинарных кавычках (например, 'A', '1').</li>\n  <li><code>boolean</code>: Логический тип, принимающий только <code>true</code> (истина) или <code>false</code> (ложь).</li>\n</ul>\n<h3>Примеры объявления:</h3>\n<pre><code>int age = 18; \ndouble price = 19.50; \nboolean isStudent = true; \nchar grade = 'A';</code></pre>\n<p><b>Строки (Текст):</b> Для текста используется ссылочный тип <code>String</code>, который пишется с заглавной буквы. Текст оформляется в двойных кавычках:<br><code>String text = \"Привет, мир!\";</code></p>\n<p><b>Константы:</b> Если значение не должно изменяться в ходе работы программы, перед типом ставится слово <code>final</code>:<br><code>final double PI = 3.14159;</code></p>",
+            "tasks": [
+                {
+                    "desc": "Объявите переменную типа <code>int</code> с именем <b>age</b> и значением 18. Выведите её на экран.",
+                    "expected": "18",
+                    "codeContains": [
+                        "int",
+                        "age",
+                        "18"
+                    ]
+                },
+                {
+                    "desc": "Создайте две дробные переменные (double) <b>x</b> и <b>y</b> со значениями 5.5 и 2.5. Выведите их сумму.",
+                    "expected": "8.0",
+                    "codeContains": [
+                        "double",
+                        "x",
+                        "y",
+                        "\\+"
+                    ]
+                },
+                {
+                    "desc": "Инъекция типа: создайте переменную <b>name</b> типа String со значением 'Java'. Выведите фразу 'I love Java'.",
+                    "expected": "I love Java",
+                    "codeContains": [
+                        "String",
+                        "\"Java\""
+                    ]
+                },
+                {
+                    "desc": "Константы: объявите финальную переменную <code>final double PI = 3.14;</code>. Выведите её.",
+                    "expected": "3.14",
+                    "codeContains": [
+                        "final",
+                        "double",
+                        "PI"
+                    ]
+                },
+                {
+                    "desc": "Логика: создайте переменную <b>isTrue</b> типа boolean со значением true. Выведите её.",
+                    "expected": "true",
+                    "codeContains": [
+                        "boolean",
+                        "isTrue",
+                        "true"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "conditionals",
+            "type": "lesson",
+            "title": "2. Ветвление (if/else)",
+            "content": "<h3>Условные операторы</h3>\n<p>Ветвление позволяет программе принимать решения на основе заданных условий. Основной инструмент — конструкция <code>if-else</code>.</p>\n<pre><code>int temperature = 25;\nif (temperature > 30) {\n    System.out.println(\"Жарко!\");\n} else if (temperature > 20) {\n    System.out.println(\"Тепло\");\n} else {\n    System.out.println(\"Холодно\");\n}</code></pre>\n<h3>Логические операторы</h3>\n<p>Сложные условия можно комбинировать:</p>\n<ul>\n  <li><code>==</code> (равно), <code>!=</code> (не равно)</li>\n  <li><code>&&</code> (логическое И) — оба условия должны быть верны.</li>\n  <li><code>||</code> (логическое ИЛИ) — хотя бы одно условие должно быть верно.</li>\n  <li><code>!</code> (логическое НЕ) — меняет условие на противоположное.</li>\n</ul>\n<pre><code>int x = 50;\nif (x >= 10 && x <= 100) {\n    System.out.println(\"В диапазоне\");\n}</code></pre>\n<h3>Оператор switch</h3>\n<p>Альтернатива длинным спискам if-else, когда мы проверяем одну переменную на конкретные совпадения:</p>\n<pre><code>int day = 1;\nswitch (day) {\n    case 1: System.out.println(\"Monday\"); break;\n    case 2: System.out.println(\"Tuesday\"); break;\n    default: System.out.println(\"Other day\");\n}</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте переменную int n = 10. Если она больше 5, выведите 'Big', иначе 'Small'.",
+                    "expected": "Big",
+                    "codeContains": [
+                        "if",
+                        "else"
+                    ]
+                },
+                {
+                    "desc": "Используйте тернарный оператор, чтобы вывести 'Success', если 5==5.",
+                    "expected": "Success",
+                    "codeContains": [
+                        "\\?"
+                    ]
+                },
+                {
+                    "desc": "Проверьте число на четность: если n (пусть n=4) четное, выведите 'Even'.",
+                    "expected": "Even",
+                    "codeContains": [
+                        "% 2"
+                    ]
+                },
+                {
+                    "desc": "Используйте switch, чтобы вывести 'One' для цифры 1.",
+                    "expected": "One",
+                    "codeContains": [
+                        "switch",
+                        "case"
+                    ]
+                },
+                {
+                    "desc": "Сложное условие: если (5 > 0 && 10 < 20), выведите 'OK'.",
+                    "expected": "OK",
+                    "codeContains": [
+                        "&&"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "methods",
+            "type": "lesson",
+            "title": "3. Методы и функции",
+            "content": "<h3>Методы (Функции)</h3>\n<p>Если один и тот же код требуется выполнять несколько раз, его выделяют в отдельный именованный блок — <b>метод</b>. Это помогает избежать дублирования и делает код читаемым.</p>\n<h3>Структура метода:</h3>\n<pre><code>public static void printGreetings() {\n    System.out.println(\"Hello!\");\n}</code></pre>\n<p>Здесь <code>void</code> означает, что метод ничего не возвращает. Вызывается он так: <code>printGreetings();</code></p>\n<h3>Методы с параметрами и возвращаемым значением</h3>\n<p>Методу можно передать данные (параметры), а он может вернуть результат (вместо void пишется нужный тип):</p>\n<pre><code>public static int sum(int a, int b) {\n    int result = a + b;\n    return result; // Возврат результата\n}\n\n// Вызов:\nint total = sum(5, 10); // 15\n</code></pre>\n<h3>Перегрузка методов (Overloading)</h3>\n<p>В Java можно создать несколько методов с одинаковым именем, если они принимают разные аргументы:</p>\n<pre><code>static void printMessage(String msg) { ... }\nstatic void printMessage(int errorCode) { ... }</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте статический метод sum, который принимает два int и выводит их сумму. Вызовите его для 5 и 3.",
+                    "expected": "8",
+                    "codeContains": [
+                        "static void sum",
+                        "sum\\(5, 3\\)"
+                    ]
+                },
+                {
+                    "desc": "Создайте метод, возвращающий квадрат числа (int). Выведите квадрат 4.",
+                    "expected": "16",
+                    "codeContains": [
+                        "return",
+                        "\\*"
+                    ]
+                },
+                {
+                    "desc": "Метод sayHello без параметров должен выводить 'Hi'. Вызовите его.",
+                    "expected": "Hi",
+                    "codeContains": [
+                        "sayHello"
+                    ]
+                },
+                {
+                    "desc": "Перегрузка: создайте два метода print, один для int, другой для String. Вызовите оба.",
+                    "expected": "10abc",
+                    "codeContains": [
+                        "void print"
+                    ]
+                },
+                {
+                    "desc": "Создайте метод factorial (рекурсия или цикл) для числа 5. Выведите результат.",
+                    "expected": "120",
+                    "codeContains": [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "sr1",
+            "type": "independent",
+            "title": "Самостоятельная работа №1",
+            "content": "<h3>Самостоятельная работа №1</h3>\n<p>В этом блоке вам предстоит решить несколько комплексных задач, объединяющих знания о переменных, условиях ветвления и базовых методах.</p>\n<p><b>Совет:</b> Внимательно анализируйте требуемый тип данных в методах, не забывайте про точку с запятой в конце выражений и правильные операторы сравнения (например, <code>==</code> вместо <code>=</code>).</p>",
+            "tasks": [
+                {
+                    "desc": "Комплексная задача: объявите переменную x=5, увеличьте её в 2 раза через метод и выведите 'Result: 10'.",
+                    "expected": "Result: 10",
+                    "codeContains": [
+                        "static",
+                        "int"
+                    ]
+                },
+                {
+                    "desc": "Проверьте через if, является ли число x (пусть x=7) простым. Выведите 'Prime'.",
+                    "expected": "Prime",
+                    "codeContains": [
+                        "if"
+                    ]
+                },
+                {
+                    "desc": "Напишите метод, который принимает возраст и возвращает 'Adult' если >= 18.",
+                    "expected": "Adult",
+                    "codeContains": [
+                        "return"
+                    ]
+                },
+                {
+                    "desc": "Используйте switch для дней недели: 1 -> 'Mon'.",
+                    "expected": "Mon",
+                    "codeContains": [
+                        "switch"
+                    ]
+                },
+                {
+                    "desc": "Выведите сумму чисел от 1 до 5 используя рекурсивный метод.",
+                    "expected": "15",
+                    "codeContains": [
+                        "static"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "loops",
+            "type": "lesson",
+            "title": "4. Циклы (for, while)",
+            "content": "<h3>Для чего нужны циклы?</h3>\n<p>Циклы позволяют выполнять один и тот же блок кода многократно.</p>\n<h3>Цикл for</h3>\n<p>Используется, когда заранее известно, сколько раз нужно повторить действие. Структура: (инициализация; условие; инкремент/декремент).</p>\n<pre><code>for (int i = 0; i < 5; i++) {\n    System.out.println(\"Итерация \" + i);\n}</code></pre>\n<h3>Цикл while</h3>\n<p>Используется, когда количество повторений неизвестно, но есть условие продолжения.</p>\n<pre><code>int count = 5;\nwhile (count > 0) {\n    System.out.println(count);\n    count--; // Уменьшаем на 1\n}</code></pre>\n<h3>Операторы break и continue</h3>\n<ul>\n  <li><code>break;</code> — полностью останавливает и выходит из цикла.</li>\n  <li><code>continue;</code> — пропускает текущую итерацию и переходит к следующей проверке.</li>\n</ul>",
+            "tasks": [
+                {
+                    "desc": "Выведите числа от 1 до 5 в одну строку через пробел, используя цикл for.",
+                    "expected": "1 2 3 4 5",
+                    "codeContains": [
+                        "for",
+                        "print"
+                    ]
+                },
+                {
+                    "desc": "Используйте цикл while, чтобы вывести 'Java' 3 раза.",
+                    "expected": "JavaJavaJava",
+                    "codeContains": [
+                        "while"
+                    ]
+                },
+                {
+                    "desc": "Вычислите сумму чисел от 1 до 10 через цикл. Выведите только результат.",
+                    "expected": "55",
+                    "codeContains": [
+                        "for",
+                        "\\+"
+                    ]
+                },
+                {
+                    "desc": "Выведите четные числа от 2 до 6 включительно через цикл for.",
+                    "expected": "246",
+                    "codeContains": [
+                        "for",
+                        "% 2 == 0"
+                    ]
+                },
+                {
+                    "desc": "Используйте break, чтобы остановить цикл for (от 1 до 10) на числе 5. Выведите 5.",
+                    "expected": "5",
+                    "codeContains": [
+                        "break",
+                        "5"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "arrays",
+            "type": "lesson",
+            "title": "5. Массивы",
+            "content": "<h3>Что такое массив?</h3>\n<p>Массив — это контейнер фиксированного размера, содержащий набор элементов одного типа. Индексация в массивах всегда начинается <b>с нуля</b>.</p>\n<h3>Создание и использование</h3>\n<pre><code>// Явная инициализация\nint[] numbers = {10, 20, 30, 40};\n\n// Доступ к элементу\nSystem.out.println(numbers[0]); // 10\n\n// Изменение элемента\nnumbers[1] = 99; // Было 20, стало 99\n</code></pre>\n<h3>Длина массива</h3>\n<p>Для узнавания длины массива используется свойство <code>length</code>. Оно очень полезно при переборе массива в цикле:</p>\n<pre><code>for (int i = 0; i &lt; numbers.length; i++) {\n    System.out.println(numbers[i]);\n}</code></pre>\n<p><b>Внимание:</b> При попытке обратиться к элементу, которого не существует (например, `numbers[10]`), возникнет ошибка `ArrayIndexOutOfBoundsException`.</p>",
+            "tasks": [
+                {
+                    "desc": "Создайте массив int с числами {10, 20, 30}. Выведите второй элемент (индекс 1).",
+                    "expected": "20",
+                    "codeContains": [
+                        "int\\[\\]",
+                        "\\[1\\]"
+                    ]
+                },
+                {
+                    "desc": "Найдите длину массива {1, 2, 3, 4, 5} и выведите её.",
+                    "expected": "5",
+                    "codeContains": [
+                        ".length"
+                    ]
+                },
+                {
+                    "desc": "Измените первый элемент массива {0, 0, 0} на 100 и выведите его.",
+                    "expected": "100",
+                    "codeContains": [
+                        "\\[0\\] =",
+                        "100"
+                    ]
+                },
+                {
+                    "desc": "Выведите все элементы массива {1, 2, 3} через цикл for.",
+                    "expected": "123",
+                    "codeContains": [
+                        "for",
+                        "\\[i\\]"
+                    ]
+                },
+                {
+                    "desc": "Найдите максимальный элемент в массиве {10, 50, 20} и выведите его.",
+                    "expected": "50",
+                    "codeContains": [
+                        "if",
+                        ">"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "strings",
+            "type": "lesson",
+            "title": "6. Строки (String)",
+            "content": "<h3>Работа со строками</h3>\n<p>Тип <code>String</code> в Java отличается от примитивных типов — это ссылочный тип (объект). Поэтому кроме хранения текста он предоставляет множество полезных методов.</p>\n<h3>Популярные методы строк:</h3>\n<pre><code>String str = \"Hello Java\";\n\n// Узнать длину строки\nint len = str.length(); // 10\n\n// Привести к верхнему / нижнему регистру\nString upper = str.toUpperCase(); // \"HELLO JAVA\"\n\n// Обрезать пробелы по краям\nString noSpaces = \"  Text  \".trim(); // \"Text\"\n\n// Получить вырезанную подстроку\n// (от символа с индексом 6 до конца)\nString sub = str.substring(6); // \"Java\"\n\n// Заменить символы\nString dev = str.replace(\"Java\", \"World\"); // \"Hello World\"\n</code></pre>\n<h3>Склеивание (Конкатенация)</h3>\n<p>Строки можно склеивать с помощью знака <code>+</code>. Если сложить строку с числом, число тоже станет строкой:</p>\n<pre><code>String s = \"Score: \" + 100; // \"Score: 100\"</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Выведите длину строки 'Hello World'.",
+                    "expected": "11",
+                    "codeContains": [
+                        ".length\\(\\)"
+                    ]
+                },
+                {
+                    "desc": "Переведите строку 'java' в верхний регистр и выведите.",
+                    "expected": "JAVA",
+                    "codeContains": [
+                        ".toUpperCase\\(\\)"
+                    ]
+                },
+                {
+                    "desc": "Проверьте, начинается ли строка 'InCode' на 'In'. Выведите true или false.",
+                    "expected": "true",
+                    "codeContains": [
+                        ".startsWith"
+                    ]
+                },
+                {
+                    "desc": "Выведите подстроку 'Code' из строки 'InCode' (индексы 2-6).",
+                    "expected": "Code",
+                    "codeContains": [
+                        ".substring"
+                    ]
+                },
+                {
+                    "desc": "Сложите строки 'I' и 'Learn' через пробел. Выведите результат.",
+                    "expected": "I Learn",
+                    "codeContains": [
+                        "\\+"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "oop_basics",
+            "type": "lesson",
+            "title": "7. ООП: Классы и объекты",
+            "content": "<h3>Основы ООП</h3>\n<p>Объектно-ориентированное программирование (ООП) позволяет моделировать реальные объекты с помощью кода. Основные понятия: <b>Класс</b> (чертеж/шаблон) и <b>Объект</b> (экземпляр, созданный по чертежу).</p>\n<h3>Пример создания класса и объекта:</h3>\n<pre><code>// 1. Описание класса (шаблона)\nclass Car {\n    String model; // Поле (состояние)\n    int speed;\n\n    // Метод (поведение)\n    void drive() {\n        System.out.println(model + \" едет.\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // 2. Создание объекта\n        Car myCar = new Car();\n        myCar.model = \"BMW\"; // Установка состояния\n        myCar.drive();       // Вызов поведения\n    }\n}</code></pre>\n<h3>Конструкторы</h3>\n<p>Конструктор — специальный метод, который вызывается при создании объекта через <code>new</code>. Он имеет то же имя, что и класс, и помогает задать начальные значения:</p>\n<pre><code>class User {\n    String name;\n    \n    // Конструктор\n    User(String fullName) {\n        this.name = fullName; // this.name - поле текущего объекта\n    }\n}\nUser u = new User(\"Alex\"); // Создание разу с именем</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте класс Car с полем int speed. В методе main создайте объект myCar, задайте speed=100 и выведите его.",
+                    "expected": "100",
+                    "codeContains": [
+                        "class Car",
+                        "new Car",
+                        ".speed = 100"
+                    ]
+                },
+                {
+                    "desc": "Добавьте конструктор в класс Person(String name), который инициализирует поле name. Создайте 'Alex' и выведите имя.",
+                    "expected": "Alex",
+                    "codeContains": [
+                        "this.name",
+                        "new Person"
+                    ]
+                },
+                {
+                    "desc": "Создайте метод void beep() внутри класса Car, который выводит 'Beep'. Вызовите его у объекта.",
+                    "expected": "Beep",
+                    "codeContains": [
+                        "myCar.beep"
+                    ]
+                },
+                {
+                    "desc": "Используйте модификатор private для поля age и создайте public метод getAge(), возвращающий 20. Выведите его результат.",
+                    "expected": "20",
+                    "codeContains": [
+                        "private",
+                        "public int getAge"
+                    ]
+                },
+                {
+                    "desc": "Создайте статический счетчик (static int count) в классе User. При создании объекта (в конструкторе) увеличивайте его. Создайте 2 объекта и выведите count.",
+                    "expected": "2",
+                    "codeContains": [
+                        "static",
+                        "count\\+\\+"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "inheritance",
+            "type": "lesson",
+            "title": "8. ООП: Наследование",
+            "content": "<h3>Наследование (Inheritance)</h3>\n<p>Наследование позволяет одному классу получить (унаследовать) поля и методы другого класса. Это мощный инструмент для построения иерархий и предотвращения дублирования кода.</p>\n<pre><code>// Родительский класс (Суперкласс)\nclass Animal {\n    void eat() {\n        System.out.println(\"Животное ест...\");\n    }\n}\n\n// Дочерний класс (Наследник) использует слово extends\nclass Dog extends Animal {\n    void bark() {\n        System.out.println(\"Гав!\");\n    }\n}\n\n// Использование:\nDog dog = new Dog();\ndog.eat();  // Метод унаследован от Animal\ndog.bark(); // Свой собственный метод\n</code></pre>\n<h3>Переопределение (Method Overriding)</h3>\n<p>Дочерний класс может изменить поведение, полученное от родителя. Перед переопределенным методом принято ставить аннотацию <code>@Override</code>:</p>\n<pre><code>class Cat extends Animal {\n    @Override\n    void eat() {\n        System.out.println(\"Кот элегантно кушает рыбу.\");\n    }\n}</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте класс Animal с методом sound() { print('RRR') }. Создать Dog extends Animal. Вызовите sound() у Dog.",
+                    "expected": "RRR",
+                    "codeContains": [
+                        "extends",
+                        "sound"
+                    ]
+                },
+                {
+                    "desc": "Переопределите (Override) метод sound() в классе Cat, чтобы он выводил 'Meow'. Вызовите его.",
+                    "expected": "Meow",
+                    "codeContains": [
+                        "@Override",
+                        "void sound"
+                    ]
+                },
+                {
+                    "desc": "Используйте super(), чтобы вызвать конструктор родителя Animal из Dog.",
+                    "expected": "Animal Created",
+                    "codeContains": [
+                        "super\\(\\)"
+                    ]
+                },
+                {
+                    "desc": "Создайте абстрактный класс Shape with метод draw(). Реализуйте Circle. Выведите 'Drawing'.",
+                    "expected": "Drawing",
+                    "codeContains": [
+                        "abstract",
+                        "draw"
+                    ]
+                },
+                {
+                    "desc": "Полиморфизм: создайте массив Animal[], положите туда Dog и Cat. В цикле вызовите sound().",
+                    "expected": "RRRMeow",
+                    "codeContains": [
+                        "Animal\\[\\]",
+                        "sound"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exceptions",
+            "type": "lesson",
+            "title": "9. Исключения (try-catch)",
+            "content": "<h3>Обработка исключений</h3>\n<p>Исключения (Exceptions) — это возникающие во время выполнения ошибки (например, деление на ноль, чтение несуществующего файла), которые приводят к остановке программы. Система <code>try-catch</code> позволяет программе реагировать на них и продолжать работу.</p>\n<h3>Конструкция try-catch</h3>\n<pre><code>try {\n    // Потенциально опасный код\n    int result = 10 / 0; \n} catch (ArithmeticException e) {\n    // Код выполнится только если возникнет 'ArithmeticException'\n    System.out.println(\"Ошибка математики: \" + e.getMessage());\n} catch (Exception e) {\n    // Универсальный перехват любых других ошибок\n    System.out.println(\"Произошла неизвестная ошибка!\");\n} finally {\n    // Блок, который сработает В ЛЮБОМ СЛУЧАЕ\n    System.out.println(\"Очистка ресурсов...\");\n}</code></pre>\n<h3>Генерация своих ошибок</h3>\n<p>С помощью оператора <code>throw</code> вы можете намеренно \"выбросить\" исключение, если условие не подходит:</p>\n<pre><code>int age = 15;\nif (age < 18) {\n    throw new IllegalArgumentException(\"Возраст должен быть больше 18!\");\n}</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Попробуйте разделить 10 на 0 внутри try-catch. В блоке catch выведите 'Error'.",
+                    "expected": "Error",
+                    "codeContains": [
+                        "try",
+                        "catch",
+                        "/ 0"
+                    ]
+                },
+                {
+                    "desc": "Используйте блок finally, чтобы вывести 'Done' после любого результата try-catch.",
+                    "expected": "Done",
+                    "codeContains": [
+                        "finally"
+                    ]
+                },
+                {
+                    "desc": "Выбросьте исключение вручную: <code>throw new Exception('My Error');</code> Поймайте его и выведите сообщение.",
+                    "expected": "My Error",
+                    "codeContains": [
+                        "throw new",
+                        "getMessage"
+                    ]
+                },
+                {
+                    "desc": "Создайте метод, который пробрасывает исключение (throws Exception). Вызовите его в main.",
+                    "expected": "Caught",
+                    "codeContains": [
+                        "throws Exception"
+                    ]
+                },
+                {
+                    "desc": "Обработайте ArrayIndexOutOfBoundsException при обращении к пустому массиву. Выведите 'Out'.",
+                    "expected": "Out",
+                    "codeContains": [
+                        "catch"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "final_exam",
+            "type": "control",
+            "title": "Итоговая контрольная работа",
+            "content": "<h3>Итоговая Контрольная Работа</h3>\n<p>Поздравляем с прохождением всех основных тем базового Java! 🎉</p>\n<p>В этом блоке вам предстоит решить задачи, которые затронут сразу все пройденные концепты: создание классов, наследование, циклы, работу с массивами, строками и обработку исключений.</p>\n<p>Убедитесь, что вы хорошо продумали логику (алгоритм) перед написанием кода, следите за синтаксисом и не бойтесь экспериментировать.</p>",
+            "tasks": [
+                {
+                    "desc": "Создайте систему: Класс User (name, age), метод для проверки совершеннолетия, массив из 2 юзеров, цикл и вывод имен тех, кому >= 18.",
+                    "expected": "Alex",
+                    "codeContains": [
+                        "class User",
+                        "for",
+                        "if"
+                    ]
+                },
+                {
+                    "desc": "Реализуйте интерфейс Playable с методом play(). Класс Game должен выводить 'Starting...'.",
+                    "expected": "Starting...",
+                    "codeContains": [
+                        "interface",
+                        "implements",
+                        "play"
+                    ]
+                },
+                {
+                    "desc": "Работа со строками и числами: пройдите циклом по строке '123' и выведите сумму её цифр (6).",
+                    "expected": "6",
+                    "codeContains": [
+                        "for",
+                        "charAt",
+                        "Integer.parseInt"
+                    ]
+                },
+                {
+                    "desc": "Наследование и исключения: создайте BankAccount, метод withdraw бросает исключение если денег мало. Выведите 'No money'.",
+                    "expected": "No money",
+                    "codeContains": [
+                        "throw",
+                        "try"
+                    ]
+                },
+                {
+                    "desc": "Финальный босс: Напишите метод, проверяющий является ли строка палиндромом (например, 'level'). Выведите true.",
+                    "expected": "true",
+                    "codeContains": [
+                        "for",
+                        "equals"
+                    ]
+                }
+            ]
+        }
+    ]
+}
