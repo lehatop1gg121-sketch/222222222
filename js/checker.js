@@ -27,7 +27,24 @@ window.SmartChecker = {
     outputMatches(actual, expected) {
         const a = this.normalizeOutput(actual);
         const e = this.normalizeOutput(expected);
-        return a===e || a.toLowerCase().includes(e.toLowerCase()) || a.replace(/\s+/g,'')===e.replace(/\s+/g,'');
+        if (a === e) return true;
+        if (a.toLowerCase().includes(e.toLowerCase())) return true;
+        if (a.replace(/\s+/g,'') === e.replace(/\s+/g,'')) return true;
+        // Числовое сравнение: "8" == "8.0", "3.14" == "3.140"
+        const numA = parseFloat(a), numE = parseFloat(e);
+        if (!isNaN(numA) && !isNaN(numE) && numA === numE &&
+            String(numA) === a || a === String(numE)) return true;
+        // Построчное числовое сравнение (для многострочного вывода)
+        const linesA = a.split('\n'), linesE = e.split('\n');
+        if (linesA.length === linesE.length) {
+            return linesA.every((la, i) => {
+                const le = linesE[i];
+                if (la === le) return true;
+                const na = parseFloat(la), ne = parseFloat(le);
+                return !isNaN(na) && !isNaN(ne) && na === ne;
+            });
+        }
+        return false;
     },
 
     async check(task, filesObj) {
