@@ -30,11 +30,10 @@ window.SmartChecker = {
         if (a === e) return true;
         if (a.toLowerCase().includes(e.toLowerCase())) return true;
         if (a.replace(/\s+/g,'') === e.replace(/\s+/g,'')) return true;
-        // Числовое сравнение: "8" == "8.0", "3.14" == "3.140"
+        // Числовое сравнение: "8" == "8.0"
         const numA = parseFloat(a), numE = parseFloat(e);
-        if (!isNaN(numA) && !isNaN(numE) && numA === numE &&
-            String(numA) === a || a === String(numE)) return true;
-        // Построчное числовое сравнение (для многострочного вывода)
+        if (!isNaN(numA) && !isNaN(numE) && numA === numE) return true;
+        // Построчное сравнение
         const linesA = a.split('\n'), linesE = e.split('\n');
         if (linesA.length === linesE.length) {
             return linesA.every((la, i) => {
