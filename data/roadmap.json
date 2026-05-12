@@ -515,6 +515,141 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "collections",
+            "type": "lesson",
+            "title": "10. Коллекции (ArrayList)",
+            "content": "<h3>ArrayList — динамический список</h3>\n<p>В отличие от массива, ArrayList сам изменяет свой размер. Он хранит объекты и позволяет удобно добавлять, удалять и перебирать элементы.</p>\n<pre><code>import java.util.ArrayList;\nArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();\nlist.add(\"Java\");\nlist.add(\"Python\");\nSystem.out.println(list.get(0)); // Java\nSystem.out.println(list.size()); // 2\nlist.remove(\"Python\");\n</code></pre>\n<h3>Перебор элементов</h3>\n<pre><code>for (String s : list) {\n    System.out.println(s);\n}\n// или с индексом:\nfor (int i = 0; i &lt; list.size(); i++) {\n    System.out.println(list.get(i));\n}</code></pre>\n<h3>HashMap — словарь ключ-значение</h3>\n<pre><code>import java.util.HashMap;\nHashMap&lt;String, Integer&gt; map = new HashMap&lt;&gt;();\nmap.put(\"age\", 18);\nSystem.out.println(map.get(\"age\")); // 18\nSystem.out.println(map.containsKey(\"age\")); // true</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте ArrayList&lt;String&gt; и добавьте в него 3 имени. Выведите первый элемент.",
+                    "expected": "Alice",
+                    "codeContains": [
+                        "ArrayList",
+                        "add",
+                        "get"
+                    ]
+                },
+                {
+                    "desc": "Создайте ArrayList&lt;Integer&gt; из чисел 1, 2, 3. С помощью цикла for-each выведите их сумму (6).",
+                    "expected": "6",
+                    "codeContains": [
+                        "ArrayList",
+                        "for"
+                    ]
+                },
+                {
+                    "desc": "Создайте ArrayList, добавьте 3 элемента, затем удалите один. Выведите размер списка (2).",
+                    "expected": "2",
+                    "codeContains": [
+                        "ArrayList",
+                        "remove",
+                        "size"
+                    ]
+                },
+                {
+                    "desc": "Создайте HashMap&lt;String, Integer&gt;, добавьте пару \"score\" → 100. Выведите значение по ключу.",
+                    "expected": "100",
+                    "codeContains": [
+                        "HashMap",
+                        "put",
+                        "get"
+                    ]
+                },
+                {
+                    "desc": "Создайте HashMap, добавьте 3 пары. Проверьте containsKey и выведите 'Found' если ключ существует.",
+                    "expected": "Found",
+                    "codeContains": [
+                        "HashMap",
+                        "containsKey"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "interfaces",
+            "type": "lesson",
+            "title": "11. Интерфейсы",
+            "content": "<h3>Что такое интерфейс?</h3>\n<p>Интерфейс — это контракт: он описывает, <b>что</b> должен уметь класс, но не <b>как</b>. Класс обязуется реализовать все методы интерфейса.</p>\n<pre><code>interface Printable {\n    void print(); // метод без тела\n}\n\nclass Document implements Printable {\n    public void print() {\n        System.out.println(\"Printing...\");\n    }\n}\n\n// Использование:\nPrintable doc = new Document();\ndoc.print(); // Printing...\n</code></pre>\n<h3>Интерфейс с несколькими методами</h3>\n<pre><code>interface Animal {\n    void sound();\n    void move();\n}\n\nclass Dog implements Animal {\n    public void sound() { System.out.println(\"Woof\"); }\n    public void move()  { System.out.println(\"Run\"); }\n}</code></pre>\n<h3>Класс может реализовывать несколько интерфейсов</h3>\n<pre><code>class Robot implements Printable, Animal { ... }</code></pre>",
+            "tasks": [
+                {
+                    "desc": "Создайте интерфейс Greetable с методом greet(). Реализуйте его в классе Person, чтобы вывести 'Hello'.",
+                    "expected": "Hello",
+                    "codeContains": [
+                        "interface",
+                        "implements",
+                        "greet"
+                    ]
+                },
+                {
+                    "desc": "Создайте интерфейс Shape с методом area(). Реализуйте его в классе Square (сторона 4, площадь 16).",
+                    "expected": "16",
+                    "codeContains": [
+                        "interface",
+                        "implements",
+                        "area"
+                    ]
+                },
+                {
+                    "desc": "Один класс реализует два интерфейса: Flyable (метод fly → 'Flying') и Swimmable (метод swim → 'Swimming'). Вызовите оба метода.",
+                    "expected": "FlyingSwimming",
+                    "codeContains": [
+                        "interface",
+                        "implements"
+                    ]
+                },
+                {
+                    "desc": "Создайте переменную типа интерфейса и присвойте ей объект реализующего класса. Вызовите метод через эту переменную.",
+                    "expected": "Done",
+                    "codeContains": [
+                        "interface",
+                        "implements"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "sr2",
+            "type": "independent",
+            "title": "Самостоятельная работа №2",
+            "content": "<h3>Самостоятельная работа №2</h3>\n<p>Задания охватывают темы: коллекции, интерфейсы, исключения и ООП. Используйте все изученные конструкции языка Java.</p>",
+            "tasks": [
+                {
+                    "desc": "Создайте ArrayList чисел от 1 до 5 и выведите только чётные (2 и 4) через цикл с условием.",
+                    "expected": "24",
+                    "codeContains": [
+                        "ArrayList",
+                        "for",
+                        "% 2"
+                    ]
+                },
+                {
+                    "desc": "Реализуйте интерфейс Comparator с методом compare(). В классе AgeComparator верните 'Older' если первый аргумент больше.",
+                    "expected": "Older",
+                    "codeContains": [
+                        "interface",
+                        "implements"
+                    ]
+                },
+                {
+                    "desc": "Создайте HashMap студентов (имя → оценка). Найдите и выведите оценку студента 'Alex' (пусть это 5).",
+                    "expected": "5",
+                    "codeContains": [
+                        "HashMap",
+                        "get"
+                    ]
+                },
+                {
+                    "desc": "Создайте класс Stack на основе ArrayList с методами push и pop. Добавьте 3 элемента, вытолкните 1. Выведите размер (2).",
+                    "expected": "2",
+                    "codeContains": [
+                        "ArrayList",
+                        "add",
+                        "remove"
+                    ]
+                }
+            ]
         }
     ]
 }

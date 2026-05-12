@@ -30,8 +30,8 @@ function renderTopicsGrid() {
         card.className = `topic-card ${isCompleted ? 'completed' : ''} ${topic.type || 'lesson'}`;
         
         let typeLabel = "Урок";
-        if (topic.type === 'independent') typeLabel = "СР";
-        if (topic.type === 'control') typeLabel = "КР";
+        if (topic.type === 'independent') typeLabel = "Самост. работа";
+        if (topic.type === 'control') typeLabel = "Контр. работа";
 
         card.innerHTML = `
             <div class="status-badge">${isCompleted ? 'Завершено ✓' : typeLabel}</div>
@@ -91,7 +91,15 @@ function renderTask() {
     }
     
     // Задание → красная панель
-    if (titleEl)    titleEl.innerText   = `${currentTopic.title} - Задание ${currentTaskIndex + 1}`;
+    if (titleEl) {
+        if (currentTopic.type === 'independent') {
+            titleEl.innerText = `${currentTopic.title} — Задание ${currentTaskIndex + 1}`;
+        } else if (currentTopic.type === 'control') {
+            titleEl.innerText = `${currentTopic.title} — Задание ${currentTaskIndex + 1}`;
+        } else {
+            titleEl.innerText = `${currentTopic.title} — Задание ${currentTaskIndex + 1}`;
+        }
+    }
     if (descEl)     descEl.innerHTML    = `<p style="font-size: 1.05rem; line-height: 1.6;">${task.desc}</p>`;
     if (feedbackEl) feedbackEl.innerHTML = '';
 
