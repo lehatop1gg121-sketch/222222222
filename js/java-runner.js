@@ -86,6 +86,8 @@ window.JavaRunner = {
         js = js.replace(/\b(?!if|for|while|switch|catch)\b(void|int|double|float|long|boolean|String|char|[\w\[\]]+)\s+([a-z]\w*)\s*\(([^)]*)\)\s*\{/g,
             (match, type, name, params) => {
                 if (['if','for','while','switch','catch','return','new'].includes(name)) return match;
+                // не трогаем static/class — они не являются возвращаемыми типами
+                if (['static','class','else','try','finally','new'].includes(type)) return match;
                 return `${name}(${this._params(params)}) {`;
             });
 
@@ -133,15 +135,8 @@ window.JavaRunner = {
             return () => { if (++cnt > 100000) throw new Error('Бесконечный цикл (лимит итераций превышен)'); };
         })();
 
-        // Встраиваем __guard() в начало циклов
-        const guarded = jsCode
-            .replace(/\bfor\s*\(/g,   'for (')
-            .replace(/\bwhile\s*\(/g, 'while (__guard() || (')
-            .replace(/\bwhile\s*\((__guard\(\) \|\| \()/g, 'while (__guard() || (')
-            // Откатываем двойное добавление
-            ;
-        // Более безопасный guard — добавляем в тело каждого цикла
-        const safe = jsCode.replace(/\b(for|while)\s*\([^{]*\)\s*\{/g, (m) => m + ' __guard();');
+        // Защита от бесконечного цикла: добавляем __guard() в тело каждого цикла
+        const safe = jsCode.replace(/\b(for|while)\s*\(([^{]*)\)\s*\{/g, (m) => m + ' __guard();');
 
         // Находим главный класс и вызываем main
         const fn = new Function(
