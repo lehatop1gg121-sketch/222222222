@@ -1,0 +1,61 @@
+/* Полное перекрытие Golden Layout для минимализма */
+.lm_root {
+    background: var(--bg-color) !important;
+}
+
+.lm_header {
+    background: var(--bg-color) !important;
+    height: 30px !important;
+}
+
+.lm_tabs {
+    padding-left: 20px !important;
+}
+
+.lm_tab {
+    background: transparent !important;
+    color: var(--dim-text) !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-family: var(--font-heading) !important;
+    margin-top: 5px !important;
+    padding: 0 15px 0 0 !important;
+}
+
+.lm_tab.lm_active {
+    color: var(--text-color) !important;
+}
+
+.lm_tab:hover {
+    color: var(--white-text) !important;
+}
+
+.lm_title {
+    color: inherit !important;
+    font-size: 12px !important;
+}
+
+.lm_close_tab, .lm_maximise, .lm_close, .lm_popin {
+    display: none !important; /* Убираем все крестики и кнопки окон для чистоты */
+}
+
+.lm_content {
+    background: var(--panel-bg) !important;
+    border: none !important;
+}
+
+/* Разделители окон */
+.lm_splitter {
+    background: var(--border-color) !important;
+    opacity: 0.5;
+    width: 2px !important;
+}
+
+.lm_splitter:hover, .lm_splitter.lm_dragging {
+    background: var(--text-color) !important;
+    opacity: 1 !important;
+}
+
+.lm_item_container {
+    background: transparent !important;
+}

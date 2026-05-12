@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{INCODE} | Курс Java</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">{INCODE}</div>
+        <nav class="main-nav">
+            <a href="index.html" class="active">Roadmap</a>
+            <a href="#">Задания</a>
+            <a href="#">Прогресс</a>
+        </nav>
+        <div class="spacer"></div>
+        <div class="user-profile" style="color: var(--text-secondary); font-size: 0.9rem;">Студент</div>
+    </header>
+
+    <main>
+        <section class="roadmap-hero">
+            <h1>Программа обучения Java</h1>
+            <p>Пройдите путь от основ синтаксиса до объектно-ориентированного программирования. Каждая тема включает теорию и практические задания.</p>
+        </section>
+
+        <div class="main-grid">
+        <aside class="topics-pane">
+            <div id="topics-grid" class="topics-grid">
+                <!-- Сюда будут подгружаться карточки тем через roadmap.js -->
+                <div class="loading-state">Загрузка программы...</div>
+            </div>
+        </aside>
+        <section class="progress-pane">
+            <h2 id="progress-title">Прогресс</h2>
+            <div id="progress-content"></div>
+        </section>
+    </div>
+    </main>
+
+    <script src="js/roadmap.js"></script>
+    <script>
+        // Инициализация загрузки списка тем на главной странице
+        document.addEventListener('DOMContentLoaded', () => {
+             // Мы передаем true, если находимся на главной (рендерим сетку)
+            loadRoadmap(true);
+        });
+    </script>
+</body>
+</html>

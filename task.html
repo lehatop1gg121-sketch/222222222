@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание | {INCODE}</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Split.js for resizing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.5/split.min.js"></script>
+    <!-- Monaco Editor Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem; letter-spacing: 1px;">Lite Java</span></div>
+        <nav class="main-nav">
+            <a href="index.html">Вернуться к темам</a>
+            <a href="#" class="active" id="current-task-nav">Задание</a>
+            <a href="#" class="btn-ref" onclick="toggleReference()">📖 Справочник</a>
+        </nav>
+        <div class="window-controls" style="margin-left: auto; display: flex; gap: 8px; align-items: center; padding-right: 16px;">
+            <span style="font-size: 0.75rem; color: var(--text-dim); margin-right: 8px;">Окна:</span>
+            <button class="btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="restorePanel('theory-panel')" title="Показать Теорию">📚</button>
+            <button class="btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="restorePanel('task-panel')" title="Показать Задания">🎯</button>
+        </div>
+    </header>
+
+    <div class="workspace-wrapper" id="main-split">
+        <!-- Левая колонка (Теория и Задание) -->
+        <div id="left-column" class="split-col">
+            <!-- Зеленая панель: Теория -->
+            <div id="theory-panel" class="panel-window">
+                <div class="panel-header" style="border-top: 3px solid #2ecc71;">
+                    <span class="panel-title">📚 Теория</span>
+                    <button class="panel-close" onclick="closePanel('theory-panel')">✕</button>
+                </div>
+                <div class="panel-content" id="theory-content" style="overflow-y: auto; padding: 16px;">
+                    <!-- Сюда грузится roadmap.js -> content -->
+                    Загружаем теорию...
+                </div>
+            </div>
+            
+            <!-- Красная панель: Задание -->
+            <div id="task-panel" class="panel-window">
+                <div class="panel-header" style="border-top: 3px solid #e74c3c;">
+                    <span class="panel-title">🎯 Задание</span>
+                    <div class="task-selector" id="task-selector-container">
+                        <!-- Сюда грузятся точки 1 2 3 4 5 -->
+                    </div>
+                    <button class="panel-close" onclick="closePanel('task-panel')">✕</button>
+                </div>
+                <div class="panel-content task-content" style="overflow-y: auto; padding: 16px; display: flex; flex-direction: column;">
+                    <h4 id="task-title" style="color: var(--accent); margin-bottom: 12px;">Загрузка...</h4>
+                    <div id="task-description" class="text-secondary" style="flex-grow: 1;">
+                        Загружаем текст задания...
+                    </div>
+                    <div class="controls-panel mt-4" style="border-top: 1px solid var(--border); padding-top: 16px;">
+                        <button id="check-btn" class="btn-primary" onclick="verifySolution()" style="width: 100%; background-color: #e74c3c; color: white; border: none;">Проверить решение</button>
+                        <div id="task-feedback" class="mt-4" style="font-weight: 500;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка (Редактор и Терминал) -->
+        <div id="right-column" class="split-col">
+            <!-- Розовая панель: Редактор -->
+            <div id="editor-panel" class="panel-window" style="border: 2px solid #ff9ada;">
+                <div class="panel-header file-tabs-header" style="background: rgba(255, 154, 218, 0.1); padding: 0;">
+                    <div class="file-tabs" id="file-tabs">
+                        <!-- Вкладки из editor.js -->
+                    </div>
+                    <button class="add-file-btn" onclick="createNewFile()" title="Добавить файл">+</button>
+                </div>
+                <div id="monaco-container" class="monaco-container" style="height: calc(100% - 35px); overflow: hidden;"></div>
+            </div>
+    </div>
+
+
+    <!-- Справочник (выдвижной) -->
+    <div id="reference-panel" class="reference-panel">
+        <div class="ref-header">
+            <h3>Справочник Java</h3>
+            <button onclick="toggleReference()">✕</button>
+        </div>
+        <div id="ref-content" class="ref-content">
+            <!-- Сюда подгрузится шпаргалка -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/offline-validator.js"></script>
+    <script src="js/compiler.js"></script>
+    <script src="js/checker.js"></script>
+    <script src="js/roadmap.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Загружаем данные темы на основе параметра ID из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const topicId = urlParams.get('id');
+            
+            if (topicId) {
+                // loadRoadmap(isIndexPage, specificId)
+                loadRoadmap(false, topicId);
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
