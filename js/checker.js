@@ -1,20 +1,21 @@
 /**
- * checker.js — Умная проверка решений
+ * checker.js — Умная проверка решений через JDoodle API
  *
- * Запрос к компилятору идёт через Netlify Function (/api/compile),
- * которая проксирует Piston API со стороны сервера — без блокировок ISP.
+ * JDoodle вызывается прямо из браузера (поддерживает CORS),
+ * не требует бэкенда и не блокируется в России.
  *
  * Порядок проверки:
- * 1. Компиляция и запуск кода (через /compile функцию → Piston)
- * 2. Если ошибка компиляции → ПРОВАЛ
- * 3. Сравнение вывода программы с expected
- * 4. Проверка codeContains (ключевые слова в комментариях/строках не считаются)
+ * 1. Компиляция и запуск через JDoodle API
+ * 2. Ошибка компиляции → ПРОВАЛ
+ * 3. Сравнение вывода с expected
+ * 4. Проверка codeContains (ключевые слова в комментариях не считаются)
  */
 
 window.SmartChecker = {
 
     // ── Вспомогательные методы ──────────────────────────────────────────
 
+    /** Убирает комментарии и строковые литералы из кода */
     stripCommentsAndStrings(code) {
         let result = '';
         let i = 0;
@@ -65,49 +66,76 @@ window.SmartChecker = {
                a.replace(/\s+/g, '') === e.replace(/\s+/g, '');
     },
 
-    // ── Запуск кода ─────────────────────────────────────────────────────
+    // ── Компиляция через JDoodle ─────────────────────────────────────────
 
     /**
-     * Отправляет файлы на компиляцию через Netlify Function.
-     * Функция делает запрос к Piston со стороны сервера — без ISP-блокировок.
+     * Запускает Java-код через JDoodle API.
+     * Возвращает { output, compileError, runtimeError } или бросает исключение.
      */
-    async runCode(pistonFiles) {
+    async runViaJDoodle(script) {
+        const cfg = window.AppConfig;
+
+        if (!cfg || !cfg.jdoodleClientId || cfg.jdoodleClientId === 'YOUR_CLIENT_ID') {
+            throw new Error('NO_API_KEY');
+        }
+
+        const requestBody = {
+            script:       script,
+            language:     'java',
+            versionIndex: '4',
+            clientId:     cfg.jdoodleClientId,
+            clientSecret: cfg.jdoodleClientSecret
+        };
+
+        console.log('[SmartChecker] Отправляем запрос на JDoodle...');
+        console.log('[SmartChecker] clientId:', cfg.jdoodleClientId.substring(0, 8) + '...');
+
         const controller = new AbortController();
-        const timeoutId  = setTimeout(() => controller.abort(), 20000);
+        const tid = setTimeout(() => controller.abort(), 20000);
 
         let response;
         try {
-            response = await fetch('/.netlify/functions/compile', {
+            response = await fetch('https://api.jdoodle.com/v1/execute', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 signal: controller.signal,
-                body: JSON.stringify({ files: pistonFiles })
+                body: JSON.stringify(requestBody)
             });
         } finally {
-            clearTimeout(timeoutId);
+            clearTimeout(tid);
         }
 
-        if (response.status === 429) {
-            throw new Error('RATE_LIMIT');
-        }
+        console.log('[SmartChecker] JDoodle HTTP статус:', response.status);
+
         if (!response.ok) {
-            const errBody = await response.json().catch(() => ({}));
-            throw new Error(errBody.error || `HTTP_${response.status}`);
+            const text = await response.text().catch(() => '');
+            console.error('[SmartChecker] JDoodle ошибка тела ответа:', text);
+            throw new Error(`HTTP_${response.status}`);
         }
 
         const data = await response.json();
+        console.log('[SmartChecker] JDoodle ответ:', JSON.stringify(data));
 
-        if (data.compile && data.compile.code !== 0) {
-            return { compileError: true, output: (data.compile.output || data.compile.stderr || '').trim() };
+        if (data.statusCode === 401 || data.error === 'Unauthorized') {
+            throw new Error('INVALID_API_KEY');
         }
-        if (data.run) {
-            const out = (data.run.output || '').trim();
-            if (data.run.code !== 0 && data.run.stderr) {
-                return { runtimeError: true, output: (data.run.output || data.run.stderr || '').trim() };
-            }
-            return { output: out };
+        if (data.statusCode === 429) {
+            throw new Error('RATE_LIMIT');
         }
-        return { output: '' };
+
+        const output = (data.output || '').trim();
+
+        const isCompileError = output.includes('error:') ||
+                               output.includes('cannot find symbol') ||
+                               output.includes('illegal start of expression') ||
+                               output.includes(';expected') ||
+                               (data.statusCode !== 200 && output.length > 0);
+
+        if (isCompileError) {
+            return { compileError: true, output };
+        }
+
+        return { output };
     },
 
     // ── Главная функция ──────────────────────────────────────────────────
@@ -116,27 +144,32 @@ window.SmartChecker = {
         const result  = { success: false, message: '', detail: '' };
         const allCode = Object.values(filesObj).join('\n');
 
-        const pistonFiles = Object.keys(filesObj).map(name => ({
-            name,
-            content: filesObj[name]
-        }));
+        // Объединяем все файлы в один скрипт для JDoodle
+        // (JDoodle не поддерживает несколько файлов, поэтому склеиваем)
+        const combinedScript = Object.values(filesObj).join('\n\n');
 
         // ── Компиляция и запуск ────────────────────────────────────────
         let runResult;
         try {
-            runResult = await this.runCode(pistonFiles);
+            runResult = await this.runViaJDoodle(combinedScript);
         } catch (err) {
-            console.error('[SmartChecker] Compile error:', err.name, err.message);
+            console.error('[SmartChecker] Error:', err.name, err.message);
 
-            if (err.name === 'AbortError') {
-                result.message = '⚠️ Сервер компилятора не ответил вовремя';
-                result.detail  = 'Попробуйте ещё раз. Если проблема повторяется — сервер временно перегружен.';
+            if (err.message === 'NO_API_KEY') {
+                result.message = '⚙️ Не настроен API-ключ компилятора';
+                result.detail  = 'Зарегистрируйтесь на jdoodle.com/compiler-api и добавьте clientId/clientSecret в js/config.js';
+            } else if (err.message === 'INVALID_API_KEY') {
+                result.message = '⚙️ Неверный API-ключ JDoodle';
+                result.detail  = 'Проверьте clientId и clientSecret в файле js/config.js';
             } else if (err.message === 'RATE_LIMIT') {
-                result.message = '⚠️ Сервер компилятора перегружен';
-                result.detail  = 'Подождите 10–15 секунд и попробуйте снова.';
+                result.message = '⚠️ Превышен дневной лимит (200 запросов/день)';
+                result.detail  = 'Лимит бесплатного плана JDoodle исчерпан. Попробуйте завтра.';
+            } else if (err.name === 'AbortError') {
+                result.message = '⚠️ Компилятор не ответил вовремя';
+                result.detail  = 'Попробуйте ещё раз.';
             } else {
                 result.message = '⚠️ Не удалось запустить код';
-                result.detail  = `Ошибка: ${err.message}\n\nПопробуйте ещё раз или обратитесь к администратору.`;
+                result.detail  = `Ошибка: ${err.message}`;
             }
             return result;
         }
@@ -146,14 +179,6 @@ window.SmartChecker = {
             result.message = '✗ Ошибка компиляции — код не является валидным Java';
             result.detail  = runResult.output
                 .split('\n').filter(l => l.trim()).slice(0, 8).join('\n');
-            return result;
-        }
-
-        // ── Ошибка выполнения ──────────────────────────────────────────
-        if (runResult.runtimeError) {
-            result.message = '✗ Ошибка во время выполнения программы';
-            result.detail  = runResult.output
-                .split('\n').filter(l => l.trim()).slice(0, 5).join('\n');
             return result;
         }
 
